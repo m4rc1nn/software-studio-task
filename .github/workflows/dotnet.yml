@@ -24,5 +24,3 @@ jobs:
       run: dotnet restore backend
     - name: Build
       run: dotnet build backend
-    - name: Run
-      run: dotnet run --project backend
