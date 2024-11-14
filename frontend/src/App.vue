@@ -40,7 +40,7 @@ const fetchMovies = async () => {
         const response = await axios.get("/api/movies");
         movies.value = response.data;
     } catch (error) {
-        showMessage("Error fetching movies", "error");
+        showMessage("Błąd podczas pobierania filmów.", "error");
         console.error("Błąd podczas pobierania filmów:", error);
     }
 };
