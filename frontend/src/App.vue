@@ -65,19 +65,19 @@ const showMessage = (text, color = "success") => {
 };
 
 const handleSave = async (movie) => {
+    const endpoint = isEditMode.value ? `/api/movies/${movie.id}` : '/api/movies';
+    const method = isEditMode.value ? 'put' : 'post';
+    const successMessage = isEditMode.value ? 'Film zaktualizowany pomyślnie' : 'Film dodany pomyślnie';
+    const errorMessage = isEditMode.value ? 'Błąd podczas aktualizowania filmu' : 'Błąd podczas dodawania filmu';
+
     try {
-        if (isEditMode.value) {
-            await axios.put(`/api/movies/${movie.id}`, movie);
-            showMessage("Film zaktualizowany pomyślnie");
-        } else {
-            await axios.post("/api/movies", movie);
-            showMessage("Film dodany pomyślnie");
-        }
+        await axios[method](endpoint, movie);
+        showMessage(successMessage);
         showModal.value = false;
         fetchMovies();
     } catch (error) {
-        showMessage("Błąd podczas zapisywania filmu", "error");
-        console.error(error);
+        console.error(`${errorMessage}:`, error);
+        showMessage(errorMessage, 'error');
     }
 };
 </script>

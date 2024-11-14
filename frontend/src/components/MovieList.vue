@@ -87,24 +87,31 @@ export default {
         };
 
         const openEditModal = (movie) => {
-            console.log("movie", movie);
             emit("open-modal", movie);
         };
 
         const confirmDelete = async (movieId) => {
             if (confirm("Czy na pewno chcesz usunąć ten film?")) {
-                await axios.delete(`/api/movies/${movieId}`);
-                emit("show-message", "Film usunięty pomyślnie", "success");
-                emit("fetch-movies");
+                try {
+                    await axios.delete(`/api/movies/${movieId}`);
+                    emit("show-message", "Film usunięty pomyślnie", "success");
+                    emit("fetch-movies");
+                } catch (error) {
+                    console.error("Błąd podczas usuwania filmu:", error);
+                    emit("show-message", "Wystąpił błąd podczas usuwania filmu", "error");
+                }
             }
         };
 
         const fetchMoviesFromExternalAPI = async () => {
-            emit("show-message", `Pobieranie filmów z zewnętrznej bazy...`, "info");
-            const response = await axios.post("/api/movies/fetch-external");
-            if (response.status === 200) {
+            try {
+                emit("show-message", `Pobieranie filmów z zewnętrznej bazy...`, "info");
+                const response = await axios.post("/api/movies/fetch-external");
                 emit("show-message", `Poprawnie pobrano filmy z zewnętrznej bazy. Nowych filmów: ${response.data.newMoviesCount}`, "success");
                 emit("fetch-movies");
+            } catch (error) {
+                console.error("Błąd podczas pobierania filmów z zewnętrznej bazy:", error);
+                emit("show-message", "Wystąpił błąd podczas pobierania filmów", "error");
             }
         };
 

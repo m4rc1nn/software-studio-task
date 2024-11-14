@@ -50,7 +50,7 @@
   </template>
   
   <script setup>
-  import { ref, onMounted, defineProps, defineEmits, watch } from 'vue';
+  import { ref, defineProps, defineEmits, watch } from 'vue';
   import { useVuelidate } from '@vuelidate/core';
   import { required, maxLength, between } from '@vuelidate/validators';
   
@@ -106,8 +106,4 @@
       close();
     }
   };
-
-  onMounted(() => {
-    console.log('localMovie', localMovie);
-  });
   </script>
